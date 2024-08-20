@@ -1,39 +1,41 @@
-import { useState, useEffect } from "react";
 import Button from "./Button";
 import TimeDisplay from "./TimeDisplay";
+import useTimer from "./useTimer";
 
-function Timer({ startTime, onComplete }) {
-  const [remaining, setRemaining] = useState(startTime);
-  const [isRunning, setRunning] = useState(false);
+function Timer({ startTime, id, onDelete }) {
 
-  useEffect(() => {
-    if (!isRunning) {
-      return;
-    }
-    function tick() {
-      setRemaining((oldValue) => {
-        const value = oldValue - 1;
-        if (value <= 0) {
-          setRunning(false);
-          return 0;
-        }
-        return value;
-      });
-    }
+  const {
+    state: { remaining, isRunning, isCompleted },
+    dispatch,
+  } = useTimer(startTime);
 
-    const interval = setInterval(tick, 1000);
-    return () => clearInterval(interval);
-  }, [isRunning, onComplete]);
+  const timerClass = [
+    "timer",
+    isCompleted ? "timer-ringing" : "",
+    isRunning ? "timer-ticking" : "",
+  ].join(" ");
 
   return (
-    <section className="timer">
+    <section className={timerClass}>
       <TimeDisplay time={remaining} />
       {isRunning ? (
-        <Button icon="pause" label="Pause" onClick={() => setRunning(false)} />
+        <Button icon="pause"
+          label="Pause"
+          onClick={() => dispatch({ type: "PAUSE" })}
+        />
       ) : (
-        <Button icon="play" label="Play" onClick={() => setRunning(true)} />
+        <Button icon="play"
+          label="Play"
+          onClick={() => dispatch({ type: "PLAY" })}
+          disabled={isCompleted}
+        />
       )}
-      <Button icon="trash" onClick={onComplete} />
+      <Button
+        icon="restart"
+        label="Restart"
+        onClick={() => dispatch({ type: "RESTART" })}
+      />
+      <Button icon="trash" label="Delete" onClick={() => onDelete(id)} />
     </section>
   );
 }
