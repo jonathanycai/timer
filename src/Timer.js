@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import Button from "./Button";
 import TimeDisplay from "./TimeDisplay";
 
-function Timer({ startTime }) {
+function Timer({ startTime, onComplete }) {
   const [remaining, setRemaining] = useState(startTime);
   const [isRunning, setRunning] = useState(false);
+
   useEffect(() => {
     if (!isRunning) {
       return;
@@ -14,32 +15,25 @@ function Timer({ startTime }) {
         const value = oldValue - 1;
         if (value <= 0) {
           setRunning(false);
-          return startTime;
+          return 0;
         }
         return value;
       });
     }
+
     const interval = setInterval(tick, 1000);
-    return () => clearInterval(interval);;
-  }, [isRunning, startTime]);
-  const play = () => setRunning(true);
-  const pause = () => setRunning(false);
+    return () => clearInterval(interval);
+  }, [isRunning, onComplete]);
+
   return (
-    <section className={
-      `timer ${isRunning ? "timer-ticking" : ""}`
-    }>
+    <section className="timer">
       <TimeDisplay time={remaining} />
       {isRunning ? (
-        <Button
-          icon="pause"
-          label="Pause"
-          onClick={pause}
-        />
+        <Button icon="pause" label="Pause" onClick={() => setRunning(false)} />
       ) : (
-        <Button icon="play"
-          label="Play"
-          onClick={play} />
+        <Button icon="play" label="Play" onClick={() => setRunning(true)} />
       )}
+      <Button icon="trash" onClick={onComplete} />
     </section>
   );
 }

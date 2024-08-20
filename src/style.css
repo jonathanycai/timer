@@ -42,13 +42,13 @@ body {
 
 .timer {
   color: white;
+  padding: 10px 30px 20px;
   background: rgba(255 255 255 / 0.1);
   border-radius: 16px;
-  width: 430px;
-  padding: 10px 30px 20px;
   display: flex;
-  align-items: center;
   gap: 16px;
+  align-items: center;
+  width: 430px;
 }
 
 .timer-ringing {
@@ -74,10 +74,10 @@ body {
 
 .parts {
   display: flex;
-  gap: 8px;
   margin: 0;
   padding: 0;
   list-style: none;
+  gap: 8px;
 }
 
 .part {
@@ -92,13 +92,14 @@ body {
 
 input.number {
   border: 3px solid rgba(255 255 255 / 0.3);
-  border-radius: 8px;
   color: white;
   background: transparent;
-  text-align: center;
   width: 83px;
-  padding: 0 4px 8px;
+  padding: 0 4px;
+  padding-bottom: 8px;
   margin: 0 -4px -10px;
+  border-radius: 8px;
+  text-align: center;
 }
 
 input.number:focus {
@@ -109,12 +110,12 @@ input.number:focus {
 .number,
 .colon,
 p.part {
-  font-size: 100px;
-  font-weight: 300;
-  margin: 0;
+  font-size: 60px;
   text-shadow: 3px 3px 3px rgba(0 0 0 / 0.3);
+  margin: 0;
   font-family: "Fira Sans", sans-serif;
   font-variant-numeric: tabular-nums;
+  font-weight: 300;
 }
 
 .colon {
@@ -141,25 +142,25 @@ p.part {
 
 .unit {
   margin: -1.2em 0 0;
-  user-select: none;
-  text-align: center;
   text-transform: uppercase;
   font-size: 10px;
+  text-align: center;
+  user-select: none;
 }
 
 .toggle {
   background-color: transparent;
   color: white;
   border: 2px solid white;
-  border-radius: 50%;
   box-shadow: 3px 3px 3px rgba(0 0 0 / 0.3);
-  padding: 10px;
   width: 50px;
   height: 50px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  padding: 10px;
 }
 
 .toggle:disabled {
@@ -189,8 +190,10 @@ p.part {
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
   -webkit-appearance: none;
   margin: 0;
+  /* <-- Apparently some margin are still there even though it's hidden */
 }
 
 input[type="number"] {
